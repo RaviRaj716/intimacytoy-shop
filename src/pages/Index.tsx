@@ -15,7 +15,7 @@ const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   
   // Fetch live prices from Google Sheets
-  const { livePrices } = useLivePrices();
+  const { livePrices, isLoading: pricesLoading } = useLivePrices();
 
   // Merge products with live prices
   const productsWithLivePrices = useMemo(() => {
@@ -151,17 +151,24 @@ const Index = () => {
         </div>
 
         {/* Products Grid - Mobile Optimized */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
-          {filteredProducts.map((product) => (
-            <ProductCard
-              key={product.sku}
-              product={product}
-              onClick={() => setSelectedProduct(product)}
-            />
-          ))}
-        </div>
+        {pricesLoading ? (
+          <div className="text-center py-12 md:py-20">
+            <div className="text-purple-300 text-lg md:text-xl">Loading latest prices...</div>
+            <p className="text-purple-400 mt-2 text-sm md:text-base">Fetching current pricing from our system</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
+            {filteredProducts.map((product) => (
+              <ProductCard
+                key={product.sku}
+                product={product}
+                onClick={() => setSelectedProduct(product)}
+              />
+            ))}
+          </div>
+        )}
 
-        {filteredProducts.length === 0 && (
+        {!pricesLoading && filteredProducts.length === 0 && (
           <div className="text-center py-12 md:py-20">
             <div className="text-purple-300 text-lg md:text-xl">No products found matching your criteria</div>
             <p className="text-purple-400 mt-2 text-sm md:text-base">Try adjusting your filters or search terms</p>
