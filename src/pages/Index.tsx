@@ -5,6 +5,7 @@ import { ProductModal } from '@/components/ProductModal';
 import { FilterBar } from '@/components/FilterBar';
 import { AdminPanel } from '@/components/AdminPanel';
 import { products } from '@/data/products';
+import { useLivePrices } from '@/hooks/useLivePrices';
 import type { Product } from '@/types/product';
 
 const Index = () => {
@@ -12,6 +13,25 @@ const Index = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 350]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  
+  // Fetch live prices from Google Sheets
+  const { livePrices } = useLivePrices();
+
+  // Merge products with live prices
+  const productsWithLivePrices = useMemo(() => {
+    return products.map(product => {
+      const livePrice = livePrices[product.sku.toUpperCase()];
+      if (livePrice) {
+        return {
+          ...product,
+          minPrice: livePrice,
+          maxPrice: livePrice,
+          priceRange: `${livePrice}USD`
+        };
+      }
+      return product;
+    });
+  }, [livePrices]);
 
   // Check for shared product in URL
   useEffect(() => {
@@ -19,14 +39,14 @@ const Index = () => {
     const sharedProductSku = urlParams.get('product');
     
     if (sharedProductSku) {
-      const sharedProduct = products.find(p => p.sku === sharedProductSku);
+      const sharedProduct = productsWithLivePrices.find(p => p.sku === sharedProductSku);
       if (sharedProduct) {
         setSelectedProduct(sharedProduct);
         // Clean up URL without refreshing
         window.history.replaceState({}, document.title, window.location.pathname);
       }
     }
-  }, []);
+  }, [productsWithLivePrices]);
 
   const categories = useMemo(() => {
     const cats = new Set<string>();
@@ -42,7 +62,7 @@ const Index = () => {
   }, []);
 
   const filteredProducts = useMemo(() => {
-    return products.filter(product => {
+    return productsWithLivePrices.filter(product => {
       const matchesSearch = product.features.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            product.sku.toLowerCase().includes(searchTerm.toLowerCase());
       
@@ -59,7 +79,7 @@ const Index = () => {
       
       return matchesSearch && matchesPrice && matchesCategory;
     });
-  }, [searchTerm, priceRange, selectedCategory]);
+  }, [searchTerm, priceRange, selectedCategory, productsWithLivePrices]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
