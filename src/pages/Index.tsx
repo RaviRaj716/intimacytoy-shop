@@ -86,7 +86,7 @@ const Index = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20" />
-        <div className="relative container mx-auto px-4 md:px-6 pt-12 md:pt-20 pb-1 md:pb-1 text-center">
+        <div className="relative container mx-auto px-4 md:px-6 pt-12 md:pt-20 pb-0.5 md:pb-0.5 text-center">
           <h1 className="text-4xl md:text-6xl font-light text-white mb-4 md:mb-6 tracking-wide">
             Luxe
             <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent font-medium">
