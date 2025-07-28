@@ -118,7 +118,7 @@ const Index = () => {
           </div>
         </div>
         {/* Ad Image Section - Mobile Only */}
-        <div className="max-w-4xl mx-auto mb-8 md:hidden">
+        <div className="max-w-4xl mx-auto mb-2 md:hidden">
           <a 
             href="https://palmai.live" 
             target="_blank" 
