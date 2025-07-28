@@ -117,6 +117,18 @@ const Index = () => {
             </div>
           </div>
         </div>
+
+        {/* Ad Image Section */}
+        <div className="max-w-4xl mx-auto mb-8">
+          <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+            <img 
+              src="/images/website image.png" 
+              alt="Premium Adult Products Dubai UAE" 
+              className="w-full h-auto object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+          </div>
+        </div>
       </div>
 
       {/* Search and Filters */}
