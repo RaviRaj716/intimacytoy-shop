@@ -120,7 +120,7 @@ const Index = () => {
         {/* Ad Image Section - Mobile Only */}
         <div className="max-w-sm mx-auto mb-5 md:hidden">
           <a 
-            href="https://palmai.live" 
+            href="https://palmai.live?source=palm_ai_banner" 
             target="_blank" 
             rel="noopener noreferrer"
             className="block"
